@@ -2,7 +2,7 @@ import React from 'react'
 import Plotly from "plotly.js"
 import createPlotlyComponent from 'react-plotly.js/factory';
 import { makeStyles } from '@material-ui/core/styles';
-import { FormControl, FormLabel, Tooltip, Typography, RadioGroup, Drawer, Radio, Divider, FormControlLabel, CssBaseline, Grid, Input, Slider } from '@material-ui/core';
+import { FormControl, FormLabel, Tooltip, Typography, Card, CardContent, RadioGroup, Drawer, Radio, Divider, FormControlLabel, CssBaseline, Grid, Input, Slider } from '@material-ui/core';
 import { createLine } from "./CalculateFutures";
 import moment from 'moment';
 import WarningIcon from '@material-ui/icons/Warning';
@@ -64,6 +64,9 @@ export default function Controls() {
     const minCals = 1200;
     const notEnoughCals = calories < minCals;
 
+    var endWeight = weights[weights.length - 1]
+    if (endWeight < goalWeight) endWeight = goalWeight;
+
     var hazards = 0;
     if (tooFast) hazards += 1;
     if (notEnoughCals) hazards += 1;
@@ -91,7 +94,7 @@ export default function Controls() {
                             <FormControlLabel value="female" control={<Radio />} label="Female" />
                         </RadioGroup>
                     </FormControl>
-                    <Divider />
+                    <Divider style={{ marginBottom: '1em' }} />
                     <FormLabel component="legend">Calories per day</FormLabel>
                     <Grid container spacing={2} >
                         <Grid item xs>
@@ -143,7 +146,7 @@ export default function Controls() {
                     >
                         <HelpIcon color="primary" />
                     </Tooltip>
-                    <FormLabel component="legend">Exercise Minutes Per Day</FormLabel>
+                    <FormLabel component="legend">Minutes spent exercising per day</FormLabel>
                     <Input
                         className={classes.input}
                         value={exerciseMinutes}
@@ -223,7 +226,9 @@ export default function Controls() {
                             range: [Math.min(startWeight, goalWeight, weights[weights.length - 1]) - yAxisBuffer, Math.max(startWeight, goalWeight, weights[weights.length - 1]) + yAxisBuffer]
                         },
                         xaxis: {
-                            range: [dates[0], moment(dates[dates.length - 1]).add('months', 1).toDate()]
+                            type: 'date',
+                            range: [dates[0], moment(dates[dates.length - 1]).add('months', 1).toDate()],
+                            tickformat: '%B %d, %Y'
                         },
                         margin: {
                             t: 50,
@@ -231,9 +236,17 @@ export default function Controls() {
                             l: 50,
                             r: 50,
                             pad: 0
-                        }, autoSize: true, title: `When will I weigh <b>${goalWeight}</b> pounds?`, tickformat: '%B %d, %Y', hoverformat: '%B %d, %Y'
+                        }, autoSize: true, title: `When will I weigh <b>${goalWeight}</b> pounds?`, hoverformat: '%B %d, %Y'
                     }}
                 />
+                <Card style={{ marginTop: '2em' }}>
+                    <CardContent>
+                        <Typography>
+                            You will weight {Math.round(endWeight)} pounds by <b>{moment(dates[dates.length - 1]).format("MMMM Do, YYYY")}</b>!
+                        </Typography>
+
+                    </CardContent>
+                </Card>
                 {tooFast && <Grid style={{ marginTop: '2em' }} container className={classes.root}>
                     <Grid item xs={1}>
                         <WarningIcon color="primary" />
