@@ -51,10 +51,10 @@ export default function Controls() {
     const [calories, setCalories] = React.useState(2000);
     const [mets, setMets] = React.useState(5.0);
     const [exerciseMinutes, setExerciseMinutes] = React.useState(0);
-    const [height, setHeight] = React.useState(74)
-    const [startWeight, setStartWeight] = React.useState(300)
-    const [goalWeight, setGoalWeight] = React.useState(280)
-    const [age, setAge] = React.useState(23)
+    const [height, setHeight] = React.useState(70)
+    const [startWeight, setStartWeight] = React.useState(200)
+    const [goalWeight, setGoalWeight] = React.useState(180)
+    const [age, setAge] = React.useState(30)
 
     const [dates, weights, tooFast] = createLine(gender, calories, mets, exerciseMinutes, height, startWeight, age, goalWeight);
 
