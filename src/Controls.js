@@ -2,7 +2,7 @@ import React from 'react'
 import Plotly from "plotly.js"
 import createPlotlyComponent from 'react-plotly.js/factory';
 import { makeStyles } from '@material-ui/core/styles';
-import { FormControl, FormLabel, Tooltip, Typography, Card, CardContent, RadioGroup, Drawer, Radio, Divider, FormControlLabel, CssBaseline, Grid, Input, Slider } from '@material-ui/core';
+import { FormControl, FormLabel, Tooltip, Typography, Button, Card, CardContent, RadioGroup, Drawer, Radio, Divider, FormControlLabel, CssBaseline, Grid, Input, Slider } from '@material-ui/core';
 import { createLine } from "./CalculateFutures";
 import moment from 'moment';
 import WarningIcon from '@material-ui/icons/Warning';
@@ -208,6 +208,32 @@ export default function Controls() {
                         }}
                     />
                 </div>
+                <div style={{
+                    position: 'fixed',
+                    bottom: 0,
+                    textAlign: 'Center',
+                    width: 'inherit',
+                    paddingBottom: '1em',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    margin: '0 auto',
+                    display: 'flex'
+                }}>
+                    <Button
+                        variant="contained"
+                        size="large"
+                        color="primary"
+                        target="_top"
+                        rel="noopener noreferrer"
+                        href={`mailto:alex@whenwilliweigh.com`}
+                        style={{
+                        }}
+                    >
+                        <Typography variant="button" style={{ fontSize: '0.69rem' }}>
+                            Contact Me
+                </Typography>
+                    </Button>
+                </div>
             </Drawer>
             <main className={classes.content}>
                 <Plot style={{ margin: 0 }}
@@ -270,7 +296,6 @@ export default function Controls() {
 
 
             </main>
-
         </div >
     )
 }
