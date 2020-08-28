@@ -82,7 +82,7 @@ export default function Controls() {
                     <Grid container spacing={2} >
                         <Grid item xs>
                             <Slider
-                                value={typeof calories === 'number' ? calories : 0}
+                                value={calories}
                                 defaultValue={calories}
                                 min={0}
                                 max={5000}
