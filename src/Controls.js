@@ -48,7 +48,7 @@ const useStyles = makeStyles((theme) => ({
 export default function Controls() {
     const classes = useStyles();
     const [gender, setGender] = React.useState("male");
-    const [calories, setCalories] = React.useState(2000);
+    const [calories, setCalories] = React.useState(1800);
     const [mets, setMets] = React.useState(5.0);
     const [exerciseMinutes, setExerciseMinutes] = React.useState(0);
     const [height, setHeight] = React.useState(70)
