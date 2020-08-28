@@ -1,13 +1,13 @@
 import moment from 'moment';
 
-const kgs_to_lbs = (kgs) => kgs * 2.20462262185;
+//const kgs_to_lbs = (kgs) => kgs * 2.20462262185;
 const lbs_to_kgs = (lbs) => lbs * 0.45359237;
 
-const bmr = (gender, lbs, inches, age) => {
+const calculate_bmr = (gender, lbs, inches, age) => {
     if (gender === "male") {
-        return 66.0 + (6.2 * lbs) + (12.7 * inches) - (6.76 * age);
+        return (4.536  * lbs) + (15.88  * inches) - (5.0 * age) + 5;
     }
-    return 655.0 + (4.35 * lbs) + (4.7 * inches) - (4.7 * age);
+    return (4.536 * lbs) + (15.88 * inches) - (5.0 * age) - 161;
 }
 
 const exerciseCalsBurned = (weight, mets, minutes) => {
@@ -22,7 +22,10 @@ export const createLine = (gender, caloriesIn, mets, exerciseMinutes, height, st
     var currentWeight = startWeight
     var tooFast = false
     while (true) {
-        var newWeight = currentWeight - (bmr(gender, currentWeight, height, age) - caloriesIn + exerciseCalsBurned(currentWeight, mets, exerciseMinutes)) / 3500
+        var bmr = calculate_bmr(gender, currentWeight, height, age) * 1.2 // 1.2 is for little-to-no exercise; this will be factored in later with METs and minutes exercised
+        var deficit = bmr - caloriesIn
+        deficit += exerciseCalsBurned(currentWeight, mets, exerciseMinutes)
+        var newWeight = currentWeight - (deficit / 3500.0)
 
         currentWeight = newWeight;
 
