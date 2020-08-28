@@ -37,8 +37,8 @@ export const createLine = (gender, caloriesIn, mets, exerciseMinutes, height, st
         dates.push(newDate.toDate());
         if (currentWeight < goalWeight)
             break;
-        if (dates.length > 1000) {
-            console.log("Calculation overdose! XXX")
+        if (dates.length > 1250) {
+            console.log("Calculation overdose! 💀")
             break;
         }
         // Check if losing more than two pounds per week
@@ -50,11 +50,8 @@ export const createLine = (gender, caloriesIn, mets, exerciseMinutes, height, st
     }
     // If abs(endWeight-startWeight) < 5 lbs, limit number of dates to 1 year
     if (dates.length > 365 && Math.abs(weights[weights.length-1] - weights[0]) < 5.0) {
-        console.error('Slicing!')
         weights = weights.slice(0, 365)
         dates = dates.slice(0, 365)
-        console.log(weights.length)
-        console.log(dates.length)
     }
     return [dates, weights, tooFast]
 }
