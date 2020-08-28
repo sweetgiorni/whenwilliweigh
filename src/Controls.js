@@ -2,10 +2,11 @@ import React from 'react'
 import Plotly from "plotly.js"
 import createPlotlyComponent from 'react-plotly.js/factory';
 import { makeStyles } from '@material-ui/core/styles';
-import { FormControl, FormLabel, Typography, RadioGroup, Drawer, Radio, Divider, FormControlLabel, CssBaseline, Grid, Input, Slider } from '@material-ui/core';
+import { FormControl, FormLabel, Tooltip, Typography, RadioGroup, Drawer, Radio, Divider, FormControlLabel, CssBaseline, Grid, Input, Slider } from '@material-ui/core';
 import { createLine } from "./CalculateFutures";
 import moment from 'moment';
 import WarningIcon from '@material-ui/icons/Warning';
+import HelpIcon from '@material-ui/icons/Help';
 
 const Plot = createPlotlyComponent(Plotly);
 
@@ -85,9 +86,9 @@ export default function Controls() {
                 <div style={{ marginLeft: '1em', marginRight: '1em', marginTop: '1em' }}>
                     <FormControl component="fieldset">
                         <FormLabel component="legend">Gender</FormLabel>
-                        <RadioGroup aria-label="gender" name="gender1" value={gender} onChange={(e, newGender) => setGender(newGender)}>
-                            <FormControlLabel value="female" control={<Radio />} label="Female" />
+                        <RadioGroup row aria-label="gender" name="gender1" value={gender} onChange={(e, newGender) => setGender(newGender)}>
                             <FormControlLabel value="male" control={<Radio />} label="Male" />
+                            <FormControlLabel value="female" control={<Radio />} label="Female" />
                         </RadioGroup>
                     </FormControl>
                     <Divider />
@@ -118,7 +119,7 @@ export default function Controls() {
                             />
                         </Grid>
                     </Grid>
-                    <FormLabel component="legend">Exercise METs</FormLabel>
+                    <FormLabel component="legend">Exercise MET</FormLabel>
                     <Input
                         className={classes.input}
                         value={mets}
@@ -130,6 +131,18 @@ export default function Controls() {
                             type: 'number'
                         }}
                     />
+                    <Tooltip
+                        title={
+                            <React.Fragment>
+                                <Typography color="inherit">The metabolic equivalent of task (MET) is the objective measure of the ratio of the rate at which a person expends energy,
+                                relative to the mass of that person, while performing some specific physical activity.
+                                Look up your activity's MET ratio with Google and enter it here.
+                                </Typography>
+                            </React.Fragment>
+                        }
+                    >
+                        <HelpIcon color="primary" />
+                    </Tooltip>
                     <FormLabel component="legend">Exercise Minutes Per Day</FormLabel>
                     <Input
                         className={classes.input}
@@ -206,6 +219,7 @@ export default function Controls() {
                     ]}
                     layout={{
                         yaxis: {
+                            hoverformat: '.1f',
                             range: [Math.min(startWeight, goalWeight, weights[weights.length - 1]) - yAxisBuffer, Math.max(startWeight, goalWeight, weights[weights.length - 1]) + yAxisBuffer]
                         },
                         xaxis: {
@@ -217,7 +231,7 @@ export default function Controls() {
                             l: 50,
                             r: 50,
                             pad: 0
-                        }, autoSize: true, title: 'Future Weight', tickformat: '%B %d, %Y', hoverformat: '%B %d, %Y'
+                        }, autoSize: true, title: `When will I weigh <b>${goalWeight}</b> pounds?`, tickformat: '%B %d, %Y', hoverformat: '%B %d, %Y'
                     }}
                 />
                 {tooFast && <Grid style={{ marginTop: '2em' }} container className={classes.root}>
