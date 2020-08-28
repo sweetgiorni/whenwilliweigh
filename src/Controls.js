@@ -268,7 +268,7 @@ export default function Controls() {
                 <Card style={{ marginTop: '2em' }}>
                     <CardContent>
                         <Typography>
-                            You will weight {Math.round(endWeight)} pounds by <b>{moment(dates[dates.length - 1]).format("MMMM Do, YYYY")}</b>!
+                            You will weigh {Math.round(endWeight)} pounds by <b>{moment(dates[dates.length - 1]).format("MMMM Do, YYYY")}</b>!
                         </Typography>
 
                     </CardContent>
