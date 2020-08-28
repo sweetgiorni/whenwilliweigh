@@ -4,11 +4,13 @@ import createPlotlyComponent from 'react-plotly.js/factory';
 import { makeStyles } from '@material-ui/core/styles';
 import { FormControl, FormLabel, Typography, RadioGroup, Drawer, Radio, Divider, FormControlLabel, CssBaseline, Grid, Input, Slider } from '@material-ui/core';
 import { createLine } from "./CalculateFutures";
+import moment from 'moment';
 import WarningIcon from '@material-ui/icons/Warning';
 
 const Plot = createPlotlyComponent(Plotly);
 
 const drawerWidth = 300;
+const yAxisBuffer = 25; // lbs
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -57,6 +59,17 @@ export default function Controls() {
     const [age, setAge] = React.useState(30)
 
     const [dates, weights, tooFast] = createLine(gender, calories, mets, exerciseMinutes, height, startWeight, age, goalWeight);
+
+    const minCals = 1200;
+    const notEnoughCals = calories < minCals;
+
+    var hazards = 0;
+    if (tooFast) hazards += 1;
+    if (notEnoughCals) hazards += 1;
+    var plotLineColor
+    if (hazards === 0) plotLineColor = 'green';
+    if (hazards === 1) plotLineColor = 'orange';
+    if (hazards >= 2) plotLineColor = 'red';
 
     return (
         <div className={classes.root}>
@@ -117,7 +130,7 @@ export default function Controls() {
                             type: 'number'
                         }}
                     />
-                    <FormLabel component="legend">Exercise Minutes/Day</FormLabel>
+                    <FormLabel component="legend">Exercise Minutes Per Day</FormLabel>
                     <Input
                         className={classes.input}
                         value={exerciseMinutes}
@@ -188,10 +201,16 @@ export default function Controls() {
                             y: weights,
                             type: 'scatter',
                             mode: 'lines+markers',
-                            marker: { color: 'red' },
+                            marker: { color: plotLineColor },
                         }
                     ]}
                     layout={{
+                        yaxis: {
+                            range: [Math.min(startWeight, goalWeight, weights[weights.length - 1]) - yAxisBuffer, Math.max(startWeight, goalWeight, weights[weights.length - 1]) + yAxisBuffer]
+                        },
+                        xaxis: {
+                            range: [dates[0], moment(dates[dates.length - 1]).add('months', 1).toDate()]
+                        },
                         margin: {
                             t: 50,
                             b: 50,
@@ -207,11 +226,20 @@ export default function Controls() {
                     </Grid>
                     <Grid item >
                         <Typography>
-                            According to experts, losing 1–2 pounds (0.45–0.9 kg) per week is a healthy and safe rate, while losing more than this is considered too fast.
+                            According to experts, losing 1–2 pound per week is a healthy and safe rate, while losing more than this is considered too fast.
                         </Typography>
                     </Grid>
                 </Grid>}
-
+                {notEnoughCals && <Grid style={{ marginTop: '2em' }} container className={classes.root}>
+                    <Grid item xs={1}>
+                        <WarningIcon color="primary" />
+                    </Grid>
+                    <Grid item >
+                        <Typography>
+                            As a general rule, people need a minimum of 1,200 calories daily to stay healthy.
+                        </Typography>
+                    </Grid>
+                </Grid>}
 
 
             </main>
