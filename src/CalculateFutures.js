@@ -34,7 +34,7 @@ export const createLine = (gender, caloriesIn, mets, exerciseMinutes, height, st
         dates.push(newDate.toDate());
         if (currentWeight < goalWeight)
             break;
-        if (dates.length > 750) {
+        if (dates.length > 1000) {
             console.log("Calculation overdose! XXX")
             break;
         }
